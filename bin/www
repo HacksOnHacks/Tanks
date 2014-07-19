@@ -14,7 +14,7 @@ io.on('connection', function (socket) {
     socket.join('tanks');
 //    tankList = socket.namespace.manager.rooms['/tanks'];
 //    tankList =
-    
+
     
 
 //    socket.emit('room', tankList);
