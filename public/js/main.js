@@ -4,7 +4,10 @@ var worldHeight = document.documentElement.clientHeight;
 var socket = io.connect('/');
 
 // World Variables
-var land;
+var land,
+    tanks = [],
+    cursors,
+    tank1;
 
 var game = new Phaser.Game(worldWidth, worldHeight, Phaser.AUTO, 'world',
     { preload: preload,
@@ -23,13 +26,34 @@ function preload() {
 }
 function create() {
     game.stage.disableVisibilityChange = true;
-    game.world.setBounds(-1000, -1000, 2000, 2000);
+    game.world.setBounds(-1000, -1000, worldWidth, worldHeight);
 
 
     land = game.add.tileSprite(0, 0, worldWidth, worldHeight, 'earth');
     land.fixedToCamera = true;
+
+    tanks.push(new Tank("1"));
+    tanks.push(new Tank("2"));
+
+
+    cursors = game.input.keyboard.createCursorKeys();
 }
 function update() {
+    tanks.map(function (tank) {
+        tank.animate();
+    });
+
+    if (cursors.left.isDown) {
+        tanks.map(function (tank) {
+            tank.rotateLeft();
+        });
+    }
+
+    if (cursors.right.isDown) {
+        tanks.map(function (tank) {
+            tank.rotateRight();
+        });
+    }
 
 }
 function render() {
