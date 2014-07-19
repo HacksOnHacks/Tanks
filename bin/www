@@ -1,0 +1,31 @@
+#!/usr/bin/env node
+var debug = require('debug')('Tanks');
+var app = require('../app');
+
+app.set('port', process.env.PORT || 3000);
+
+var server = app.listen(app.get('port'), function() {
+  debug('Express server listening on port ' + server.address().port);
+});
+
+var io = require('socket.io')(server);
+
+io.on('connection', function (socket) {
+    socket.join('tanks');
+//    tankList = socket.namespace.manager.rooms['/tanks'];
+//    tankList =
+    
+    
+
+//    socket.emit('room', tankList);
+    socket.emit('youare', socket.id);
+
+    socket.on('tankupdate', function(data) {
+//        console.log(data);
+        socket.broadcast.emit('tankmove',data);
+    });
+
+    socket.on('disconnect', function() {
+
+    });
+});

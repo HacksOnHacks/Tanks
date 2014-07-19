@@ -1,0 +1,16 @@
+{
+  "name": "Tanks",
+  "version": "0.0.0",
+  "authors": [
+    "Adam Booth <adam@ambooth.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public",
+    "test",
+    "tests"
+  ]
+}
