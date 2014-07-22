@@ -3,6 +3,7 @@ function Tank(name) {
     this.x = game.world.randomX;
     this.y = game.world.randomY;
     this.name = name;
+    this.health = 1000;
 
     this.tank = game.add.sprite(this.x, this.y, 'tank', 'tank1');
 
@@ -13,8 +14,7 @@ function Tank(name) {
     this.tank.animations.add('move', ['tank1', 'tank2', 'tank3', 'tank4', 'tank5', 'tank6'], 20, true);
 
     this.tank.turret = game.add.sprite(this.x, (this.y - 2), 'tank', 'turret');
-    this.tank.turret.anchor.setTo(0.3, 0.3);
-
+    this.tank.turret.anchor.setTo(0.2, 0.5);
 }
 
 Tank.prototype.rotateLeft = function () {
@@ -36,10 +36,12 @@ Tank.prototype.move = function (currentSpeed) {
 
 Tank.prototype.fire = function () {
     // Create new instance of Bullet
+    var bullet = new Bullet(this.tank.turret.x, this.tank.turret.y, this.tank.turret.angle);
 };
 
 Tank.prototype.animate = function () {
     this.tank.animations.play('move');
+    this.tank.turret.rotation = game.physics.arcade.angleToPointer(this.tank.turret);
 };
 
 Tank.prototype.name = function () {

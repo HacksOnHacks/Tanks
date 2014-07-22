@@ -33,10 +33,10 @@ function create() {
     land = game.add.tileSprite(0, 0, worldWidth, worldHeight, 'earth');
     land.fixedToCamera = true;
 
-//    for (var i = 0; i < 1000; i++) {
+    for (var i = 0; i < 1; i++) {
 
         tanks.push(new Tank("1"));
-//    }
+    }
 
     console.log(tanks[0]);
 
@@ -47,26 +47,35 @@ function update() {
         tank.animate();
     });
 
+    var forwardKey = game.input.keyboard.addKey(Phaser.Keyboard.W),
+        leftKey = game.input.keyboard.addKey(Phaser.Keyboard.A),
+        rightKey = game.input.keyboard.addKey(Phaser.Keyboard.D);
+
     // Move Tank forward
-    if (cursors.up.isDown) {
+    if (forwardKey.isDown || cursors.up.isDown) {
         currentSpeed = 300;
     }
 
     // Rotate Tank left
-    if (cursors.left.isDown) {
+    if (leftKey.isDown || cursors.left.isDown) {
         tanks.map(function (tank) {
             tank.rotateLeft();
         });
     }
 
     // Rotate Tank right
-    if (cursors.right.isDown) {
+    if (rightKey.isDown || cursors.right.isDown) {
         tanks.map(function (tank) {
             tank.rotateRight();
         });
     }
+    if (game.input.activePointer.isDown) {
+        tanks.map(function (tank) {
+            tank.fire();
+        })
+    }
 
-    if (currentSpeed > 0) {
+    if (currentSpeed >= 0) {
         tanks.map(function (tank) {
             tank.move(currentSpeed);
             currentSpeed -= 5;
