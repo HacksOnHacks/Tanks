@@ -1,41 +1,37 @@
-var tank = {
-    turret: {},
-    x: null,
-    y: null,
-    persona: null
-};
-
-var self;
-
+'use strict';
 function Tank(name) {
-    // Create a new
-    self = this;
-    self.name = name;
+    this.x = game.world.randomX;
+    this.y = game.world.randomY;
+    this.name = name;
 
-    self.x = game.world.randomX;
-    self.y = game.world.randomY;
+    this.tank = game.add.sprite(this.x, this.y, 'tank', 'tank1');
 
+    // Enable physics for this object
+    game.physics.enable(this.tank, Phaser.Physics.ARCADE);
 
-    self = game.add.sprite(self.x, self.y, 'tank', 'tank1');
-    self.anchor.setTo(0.5, 0.5);
-    self.animations.add('move', ['tank1', 'tank2', 'tank3', 'tank4', 'tank5', 'tank6'], 20, true);
+    this.tank.anchor.setTo(0.5, 0.5);
+    this.tank.animations.add('move', ['tank1', 'tank2', 'tank3', 'tank4', 'tank5', 'tank6'], 20, true);
 
-    self.turret = game.add.sprite(self.x, (self.y - 2), 'tank', 'turret');
-    self.turret.anchor.setTo(0.3, 0.3);
+    this.tank.turret = game.add.sprite(this.x, (this.y - 2), 'tank', 'turret');
+    this.tank.turret.anchor.setTo(0.3, 0.3);
 
-    return this;
 }
 
 Tank.prototype.rotateLeft = function () {
-    self.angle -= 2;
+    this.tank.angle -= 3;
+    this.tank.turret.angle -= 3;
 };
 
 Tank.prototype.rotateRight = function () {
-    self.angle += 2;
+    this.tank.angle += 3;
+    this.tank.turret.angle += 3;
 };
 
-Tank.prototype.move = function () {
-    // Move forward
+// Move forward
+Tank.prototype.move = function (currentSpeed) {
+    this.tank.turret.x = this.tank.x;
+    this.tank.turret.y = this.tank.y;
+    game.physics.arcade.velocityFromRotation(this.tank.rotation, currentSpeed, this.tank.body.velocity);
 };
 
 Tank.prototype.fire = function () {
@@ -43,9 +39,9 @@ Tank.prototype.fire = function () {
 };
 
 Tank.prototype.animate = function () {
-    self.animations.play('move');
+    this.tank.animations.play('move');
 };
 
 Tank.prototype.name = function () {
-    return self.name;
+    return this.name;
 };

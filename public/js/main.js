@@ -7,7 +7,8 @@ var socket = io.connect('/');
 var land,
     tanks = [],
     cursors,
-    tank1;
+    tank1,
+    currentSpeed;
 
 var game = new Phaser.Game(worldWidth, worldHeight, Phaser.AUTO, 'world',
     { preload: preload,
@@ -21,7 +22,7 @@ function preload() {
     game.load.atlas('tank', '/images/tanks.png', '/tanks.json');
     game.load.image('earth', '/images/scorched_earth.png');
     game.load.image('bullet', '/images/bullet.png');
-    game.add.text(16, 16, 'Room', {font: '32px arial', fill: '#000'});
+    // game.add.text(16, 16, 'Room', {font: '32px arial', fill: '#000'});
 
 }
 function create() {
@@ -32,9 +33,12 @@ function create() {
     land = game.add.tileSprite(0, 0, worldWidth, worldHeight, 'earth');
     land.fixedToCamera = true;
 
-    tanks.push(new Tank("1"));
-    tanks.push(new Tank("2"));
+//    for (var i = 0; i < 1000; i++) {
 
+        tanks.push(new Tank("1"));
+//    }
+
+    console.log(tanks[0]);
 
     cursors = game.input.keyboard.createCursorKeys();
 }
@@ -43,17 +47,32 @@ function update() {
         tank.animate();
     });
 
+    // Move Tank forward
+    if (cursors.up.isDown) {
+        currentSpeed = 300;
+    }
+
+    // Rotate Tank left
     if (cursors.left.isDown) {
         tanks.map(function (tank) {
             tank.rotateLeft();
         });
     }
 
+    // Rotate Tank right
     if (cursors.right.isDown) {
         tanks.map(function (tank) {
             tank.rotateRight();
         });
     }
+
+    if (currentSpeed > 0) {
+        tanks.map(function (tank) {
+            tank.move(currentSpeed);
+            currentSpeed -= 5;
+        })
+    }
+
 
 }
 function render() {
